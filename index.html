@@ -365,7 +365,6 @@
         }, { passive: false });
 
         function handlePointerDown(e) {
-        function handlePointerDown(e) {
             if (currentMode !== 'freehand' || !sourceImage) return;
             
             const rect = previewCanvas.getBoundingClientRect();
@@ -401,7 +400,6 @@
             currentRect = { x: startX, y: startY, width: 0, height: 0 };
         }
 
-        function handlePointerMove(e) {
         function handlePointerMove(e) {
             if (currentMode !== 'freehand') return;
             
@@ -511,7 +509,6 @@
         }
 
         function handlePointerUp(e) {
-        function handlePointerUp(e) {
             if (currentMode !== 'freehand') return;
             
             if (isResizing) {
@@ -548,7 +545,6 @@
             }
         }
 
-        function handlePointerLeave() {
         function handlePointerLeave() {
             if (isDrawing) {
                 isDrawing = false;
