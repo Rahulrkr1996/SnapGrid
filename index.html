@@ -13,7 +13,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>SnapGrid – Free Online Multi Image Crop Tool | Grid & Freehand</title>
+        <title>SnapGrid - Free Online Multi Image Crop Tool | Grid & Freehand</title>
 
         <meta name="description" content="SnapGrid is a free online multi-image crop tool. Crop images using grid mode or freehand mode for sprite sheets, UI, and game assets. No installation required.">
         <meta name="keywords" content="image crop tool, online image cropper, sprite sheet cutter, batch image crop, grid crop tool, freehand crop tool, snapgrid, image slicing tool">
@@ -55,816 +55,882 @@
     </head>
 
     <body>
-        <div class="container">
-            <div class="header">
-                <div class="header-content">
-                    <div class="logo-container">
-                        <img src="CompanyLogo.png" alt="Company Logo" class="logo">
-                        <h1>SnapGrid</h1>
-                    </div>
-                    <div class="seo-text" style="max-width:900px; margin:20px auto; color:#ddd;">
-                        <h2>What is SnapGrid?</h2>
-                        <p>
-                        SnapGrid is a free online image cropping tool designed for developers, artists, and game creators. 
-                        It allows you to split images into multiple parts using grid mode or draw custom regions using freehand mode. 
-                        Perfect for sprite sheets, UI assets, and batch image slicing.
-                        </p>
-                    </div>
-
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo-icon"><img src="CompanyLogo.png" alt="Company Logo" class="logo"></div>
+                <div>
+                    <div class="logo-text">SnapGrid</div>
                 </div>
+                <div class="logo-subtitle"> Free Online Multi Image Crop Tool</div>
             </div>
+        </header>
 
-            <div class="content">
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">📁</div>
-                    <h3>Click or drag an image here</h3>
-                    <p>Supports PNG, JPG, and other image formats</p>
+        <!-- Main Workspace -->
+        <div class="workspace">
+            <!-- Left Panel -->
+            <aside class="left-panel">
+                <!-- Upload Section -->
+                <div class="panel-section">
+                    <button class="upload-btn" id="uploadBtn">
+                        <span class="upload-icon">📁</span>
+                        <span>Choose Image</span>
+                    </button>
                     <input type="file" id="imageInput" accept="image/*">
                 </div>
 
-                <div id="mainSection" class="hidden">
-                    <div class="mode-selector">
-                        <button class="mode-btn active" id="gridModeBtn">📐 Grid Mode</button>
-                        <button class="mode-btn" id="freehandModeBtn">✏️ Freehand Mode</button>
-                    </div>
-
-                    <!-- Grid Mode Controls -->
-                    <div id="gridControls">
-                        <div class="controls">
-                            <div class="control-group">
-                                <label for="topBorder">Top Border (px)</label>
-                                <input type="number" id="topBorder" value="0" min="0">
-                            </div>
-                            <div class="control-group">
-                                <label for="bottomBorder">Bottom Border (px)</label>
-                                <input type="number" id="bottomBorder" value="50" min="0">
-                            </div>
-                            <div class="control-group">
-                                <label for="leftBorder">Left Border (px)</label>
-                                <input type="number" id="leftBorder" value="0" min="0">
-                            </div>
-                            <div class="control-group">
-                                <label for="rightBorder">Right Border (px)</label>
-                                <input type="number" id="rightBorder" value="50" min="0">
-                            </div>
-                            <div class="control-group">
-                                <label for="rows">Rows</label>
-                                <input type="number" id="rows" value="2" min="1" max="20">
-                            </div>
-                            <div class="control-group">
-                                <label for="cols">Columns</label>
-                                <input type="number" id="cols" value="2" min="1" max="20">
-                            </div>
-                            <div class="control-group">
-                                <label for="marginX">Horizontal Margin (px)</label>
-                                <input type="number" id="marginX" value="0" min="0">
-                            </div>
-                            <div class="control-group">
-                                <label for="marginY">Vertical Margin (px)</label>
-                                <input type="number" id="marginY" value="0" min="0">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Freehand Mode Instructions -->
-                    <div id="freehandControls" class="hidden">
-                        <div class="freehand-instructions">
-                            <p><strong>🖱️ Click and drag to draw rectangles</strong></p>
-                            <p>✋ Click and drag regions to move them</p>
-                            <p>📏 Drag corner/edge handles to resize</p>
-                        </div>
-
-                        <div id="regionsList" class="regions-list hidden">
-                            <h3>Drawn Regions (<span id="regionCount">0</span>)</h3>
-                            <div id="regionsContainer"></div>
-                        </div>
-                    </div>
-
-                    <div class="preview-section">
-                        <h2 id="previewTitle">Preview</h2>
-                        <div class="canvas-container">
-                            <canvas id="previewCanvas"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button class="btn-primary" id="updatePreview">Update Preview</button>
-                        <button class="btn-primary" id="cropButton">Crop Images</button>
-                        <button class="btn-danger" id="clearRegions" style="display:none;">Clear All Regions</button>
-                        <button class="btn-secondary" id="resetButton">Reset</button>
+                <!-- Mode Tabs -->
+                <div class="panel-section" id="modeSection" style="display: none;">
+                    <div class="section-title">Crop Mode</div>
+                    <div class="mode-tabs">
+                        <button class="mode-tab active" id="gridModeBtn">
+                            <span class="mode-icon">▦</span>
+                            <span>Grid</span>
+                        </button>
+                        <button class="mode-tab" id="freehandModeBtn">
+                            <span class="mode-icon">✏️</span>
+                            <span>Freehand</span>
+                        </button>
                     </div>
                 </div>
 
-                <div id="croppedSection" class="cropped-images hidden">
-                    <h2>Cropped Images (<span id="imageCount">0</span>)</h2>
-                    <div class="image-grid" id="croppedGrid"></div>
-                    <div class="button-group">
-                        <button class="btn-primary" id="downloadAllButton">Download All as ZIP</button>
+                <!-- Grid Controls -->
+                <div class="panel-section" id="gridControls" style="display: none;">
+                    <div class="section-title">Grid Settings</div>
+                    <div class="controls-grid">
+                        <div class="control-group">
+                            <label class="control-label">Rows</label>
+                            <input type="number" class="control-input" id="rows" value="2" min="1" max="20">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Columns</label>
+                            <input type="number" class="control-input" id="cols" value="2" min="1" max="20">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Top Border</label>
+                            <input type="number" class="control-input" id="topBorder" value="0" min="0">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Bottom Border</label>
+                            <input type="number" class="control-input" id="bottomBorder" value="50" min="0">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Left Border</label>
+                            <input type="number" class="control-input" id="leftBorder" value="0" min="0">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Right Border</label>
+                            <input type="number" class="control-input" id="rightBorder" value="50" min="0">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">H. Margin</label>
+                            <input type="number" class="control-input" id="marginX" value="0" min="0">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">V. Margin</label>
+                            <input type="number" class="control-input" id="marginY" value="0" min="0">
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="applyGridBtn">
+                            <span>✓</span>
+                            <span>Apply Grid</span>
+                        </button>
+                        <button class="btn btn-primary" id="sliceGridBtn">
+                            <span>✂️</span>
+                            <span>Slice Image</span>
+                        </button>
                     </div>
                 </div>
-            </div>
+
+                <!-- Freehand Controls -->
+                <div class="panel-section hidden" id="freehandControls">
+                    <div class="section-title">Freehand Tools</div>
+                    
+                    <div class="freehand-hint">
+                        <div class="hint-item">
+                            <span class="hint-icon">🖱️</span>
+                            <span>Click and drag to draw regions</span>
+                        </div>
+                        <div class="hint-item">
+                            <span class="hint-icon">✋</span>
+                            <span>Click regions to move them</span>
+                        </div>
+                        <div class="hint-item">
+                            <span class="hint-icon">📏</span>
+                            <span>Drag handles to resize</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="sliceFreehandBtn">
+                            <span>✂️</span>
+                            <span>Slice Regions</span>
+                        </button>
+                        <button class="btn btn-danger" id="clearRegionsBtn">
+                            <span>🗑️</span>
+                            <span>Clear All</span>
+                        </button>
+                    </div>
+
+                    <!-- Regions List -->
+                    <div id="regionsList" class="hidden">
+                        <div class="regions-header">
+                            <div class="section-title" style="margin: 0;">Regions</div>
+                            <div class="regions-count" id="regionCount">0</div>
+                        </div>
+                        <div class="regions-panel" id="regionsContainer"></div>
+                    </div>
+                </div>
+
+                <!-- Reset Button -->
+                <div class="panel-section">
+                    <button class="btn btn-secondary" id="resetBtn" style="width: 100%;">
+                        <span>↻</span>
+                        <span>Reset All</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Right Panel -->
+            <main class="right-panel">
+                <div class="canvas-header">
+                    <div class="canvas-title">Canvas Preview</div>
+                </div>
+
+                <div class="canvas-workspace" id="canvasWorkspace">
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-icon">🎨</div>
+                        <div class="empty-title">No Image Loaded</div>
+                        <div class="empty-text">Upload an image to get started</div>
+                    </div>
+                    <div class="canvas-container hidden" id="canvasContainer">
+                        <canvas id="previewCanvas"></canvas>
+                    </div>
+                </div>
+            </main>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-        <script>
-            let sourceImage = null;
-            let croppedImages = [];
-            let currentMode = 'grid'; // 'grid' or 'freehand'
-            let freehandRegions = [];
-            let isDrawing = false;
-            let startX, startY;
-            let currentRect = null;
-            let selectedRegion = null;
-            let isDragging = false;
-            let isResizing = false;
-            let resizeHandle = null;
-            let dragOffsetX = 0;
-            let dragOffsetY = 0;
-            const handleSize = 8;
+        <!-- Cropped Images Section -->
+        <div class="cropped-section" id="croppedSection">
+            <div class="cropped-header">
+                <div class="cropped-title">
+                    <span>Sliced Images</span>
+                    <span class="image-count-badge" id="imageCount">0</span>
+                </div>
+                <button class="btn btn-primary" id="exportAllBtn">
+                    <span>📦</span>
+                    <span>Export All</span>
+                </button>
+            </div>
+            <div class="cropped-content">
+                <div class="image-grid" id="imageGrid"></div>
+            </div>
+        </div>
+    </div>
 
-            const uploadArea = document.getElementById('uploadArea');
-            const imageInput = document.getElementById('imageInput');
-            const mainSection = document.getElementById('mainSection');
-            const previewCanvas = document.getElementById('previewCanvas');
-            const ctx = previewCanvas.getContext('2d');
-            const croppedSection = document.getElementById('croppedSection');
-            const croppedGrid = document.getElementById('croppedGrid');
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        let sourceImage = null;
+        let croppedImages = [];
+        let currentMode = 'grid';
+        let freehandRegions = [];
+        let isDrawing = false;
+        let startX, startY;
+        let currentRect = null;
+        let selectedRegion = null;
+        let isDragging = false;
+        let isResizing = false;
+        let resizeHandle = null;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        const handleSize = ('ontouchstart' in window) ? 16 : 8; // Larger handles for touch devices
 
-            const gridModeBtn = document.getElementById('gridModeBtn');
-            const freehandModeBtn = document.getElementById('freehandModeBtn');
-            const gridControls = document.getElementById('gridControls');
-            const freehandControls = document.getElementById('freehandControls');
-            const clearRegionsBtn = document.getElementById('clearRegions');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const imageInput = document.getElementById('imageInput');
+        const modeSection = document.getElementById('modeSection');
+        const gridModeBtn = document.getElementById('gridModeBtn');
+        const freehandModeBtn = document.getElementById('freehandModeBtn');
+        const gridControls = document.getElementById('gridControls');
+        const freehandControls = document.getElementById('freehandControls');
+        const emptyState = document.getElementById('emptyState');
+        const canvasContainer = document.getElementById('canvasContainer');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const ctx = previewCanvas.getContext('2d');
+        const croppedSection = document.getElementById('croppedSection');
+        const imageGrid = document.getElementById('imageGrid');
+
+        // Upload
+        uploadBtn.addEventListener('click', () => imageInput.click());
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) loadImage(file);
+        });
+
+        // Mobile-friendly drag and drop on upload button
+        uploadBtn.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBtn.style.transform = 'scale(1.02)';
+        });
+
+        uploadBtn.addEventListener('dragleave', () => {
+            uploadBtn.style.transform = '';
+        });
+
+        uploadBtn.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBtn.style.transform = '';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                loadImage(file);
+            }
+        });
+
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    sourceImage = img;
+                    emptyState.classList.add('hidden');
+                    canvasContainer.classList.remove('hidden');
+                    modeSection.style.display = 'block';
+                    gridControls.style.display = 'block';
+                    freehandRegions = [];
+                    updatePreview();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Mode Switching
+        gridModeBtn.addEventListener('click', () => {
+            currentMode = 'grid';
+            gridModeBtn.classList.add('active');
+            freehandModeBtn.classList.remove('active');
+            gridControls.style.display = 'block';
+            freehandControls.classList.add('hidden');
+            previewCanvas.style.cursor = 'default';
+            updatePreview();
+        });
+
+        freehandModeBtn.addEventListener('click', () => {
+            currentMode = 'freehand';
+            freehandModeBtn.classList.add('active');
+            gridModeBtn.classList.remove('active');
+            gridControls.style.display = 'none';
+            freehandControls.classList.remove('hidden');
+            previewCanvas.style.cursor = 'crosshair';
+            updatePreview();
+        });
+
+        // Canvas Events - Mouse
+        previewCanvas.addEventListener('mousedown', handlePointerDown);
+        previewCanvas.addEventListener('mousemove', handlePointerMove);
+        previewCanvas.addEventListener('mouseup', handlePointerUp);
+        previewCanvas.addEventListener('mouseleave', handlePointerLeave);
+
+        // Canvas Events - Touch
+        previewCanvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            handlePointerDown(mouseEvent);
+        }, { passive: false });
+
+        previewCanvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            handlePointerMove(mouseEvent);
+        }, { passive: false });
+
+        previewCanvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            handlePointerUp();
+        }, { passive: false });
+
+        previewCanvas.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            handlePointerLeave();
+        }, { passive: false });
+
+        function handlePointerDown(e) {
+        function handlePointerDown(e) {
+            if (currentMode !== 'freehand' || !sourceImage) return;
+            
+            const rect = previewCanvas.getBoundingClientRect();
+            const scaleX = sourceImage.width / rect.width;
+            const scaleY = sourceImage.height / rect.height;
+            
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
+            
+            const handleInfo = getResizeHandle(mouseX, mouseY);
+            if (handleInfo) {
+                isResizing = true;
+                selectedRegion = handleInfo.regionIndex;
+                resizeHandle = handleInfo.handle;
+                return;
+            }
+            
+            const clickedRegion = getRegionAtPoint(mouseX, mouseY);
+            if (clickedRegion !== null) {
+                selectedRegion = clickedRegion;
+                isDragging = true;
+                const region = freehandRegions[clickedRegion];
+                dragOffsetX = mouseX - region.x;
+                dragOffsetY = mouseY - region.y;
+                updatePreview();
+                return;
+            }
+            
+            selectedRegion = null;
+            startX = mouseX;
+            startY = mouseY;
+            isDrawing = true;
+            currentRect = { x: startX, y: startY, width: 0, height: 0 };
+        }
+
+        function handlePointerMove(e) {
+        function handlePointerMove(e) {
+            if (currentMode !== 'freehand') return;
+            
+            const rect = previewCanvas.getBoundingClientRect();
+            const scaleX = sourceImage.width / rect.width;
+            const scaleY = sourceImage.height / rect.height;
+            
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
+            
+            if (isResizing && selectedRegion !== null) {
+                const region = freehandRegions[selectedRegion];
+                
+                switch(resizeHandle) {
+                    case 'nw':
+                        const newWidth1 = region.width + (region.x - mouseX);
+                        const newHeight1 = region.height + (region.y - mouseY);
+                        if (newWidth1 > 10 && newHeight1 > 10) {
+                            region.x = mouseX;
+                            region.y = mouseY;
+                            region.width = newWidth1;
+                            region.height = newHeight1;
+                        }
+                        break;
+                    case 'ne':
+                        const newWidth2 = mouseX - region.x;
+                        const newHeight2 = region.height + (region.y - mouseY);
+                        if (newWidth2 > 10 && newHeight2 > 10) {
+                            region.y = mouseY;
+                            region.width = newWidth2;
+                            region.height = newHeight2;
+                        }
+                        break;
+                    case 'sw':
+                        const newWidth3 = region.width + (region.x - mouseX);
+                        const newHeight3 = mouseY - region.y;
+                        if (newWidth3 > 10 && newHeight3 > 10) {
+                            region.x = mouseX;
+                            region.width = newWidth3;
+                            region.height = newHeight3;
+                        }
+                        break;
+                    case 'se':
+                        region.width = mouseX - region.x;
+                        region.height = mouseY - region.y;
+                        if (region.width < 10) region.width = 10;
+                        if (region.height < 10) region.height = 10;
+                        break;
+                    case 'n':
+                        const newHeight5 = region.height + (region.y - mouseY);
+                        if (newHeight5 > 10) {
+                            region.y = mouseY;
+                            region.height = newHeight5;
+                        }
+                        break;
+                    case 's':
+                        region.height = mouseY - region.y;
+                        if (region.height < 10) region.height = 10;
+                        break;
+                    case 'w':
+                        const newWidth6 = region.width + (region.x - mouseX);
+                        if (newWidth6 > 10) {
+                            region.x = mouseX;
+                            region.width = newWidth6;
+                        }
+                        break;
+                    case 'e':
+                        region.width = mouseX - region.x;
+                        if (region.width < 10) region.width = 10;
+                        break;
+                }
+                
+                updateRegionsList();
+                updatePreview();
+                return;
+            }
+            
+            if (isDragging && selectedRegion !== null) {
+                const region = freehandRegions[selectedRegion];
+                region.x = Math.max(0, Math.min(mouseX - dragOffsetX, sourceImage.width - region.width));
+                region.y = Math.max(0, Math.min(mouseY - dragOffsetY, sourceImage.height - region.height));
+                updatePreview();
+                return;
+            }
+            
+            if (isDrawing) {
+                currentRect.width = mouseX - startX;
+                currentRect.height = mouseY - startY;
+                updatePreview();
+                return;
+            }
+            
+            const handleInfo = getResizeHandle(mouseX, mouseY);
+            if (handleInfo) {
+                const cursors = {
+                    'nw': 'nw-resize', 'ne': 'ne-resize',
+                    'sw': 'sw-resize', 'se': 'se-resize',
+                    'n': 'n-resize', 's': 's-resize',
+                    'w': 'w-resize', 'e': 'e-resize'
+                };
+                previewCanvas.style.cursor = cursors[handleInfo.handle];
+            } else if (getRegionAtPoint(mouseX, mouseY) !== null) {
+                previewCanvas.style.cursor = 'move';
+            } else {
+                previewCanvas.style.cursor = 'crosshair';
+            }
+        }
+
+        function handlePointerUp(e) {
+        function handlePointerUp(e) {
+            if (currentMode !== 'freehand') return;
+            
+            if (isResizing) {
+                isResizing = false;
+                resizeHandle = null;
+                updatePreview();
+                return;
+            }
+            
+            if (isDragging) {
+                isDragging = false;
+                updatePreview();
+                return;
+            }
+            
+            if (isDrawing) {
+                isDrawing = false;
+                
+                if (Math.abs(currentRect.width) > 10 && Math.abs(currentRect.height) > 10) {
+                    const normalizedRect = {
+                        x: currentRect.width < 0 ? startX + currentRect.width : startX,
+                        y: currentRect.height < 0 ? startY + currentRect.height : startY,
+                        width: Math.abs(currentRect.width),
+                        height: Math.abs(currentRect.height)
+                    };
+                    
+                    freehandRegions.push(normalizedRect);
+                    selectedRegion = freehandRegions.length - 1;
+                    updateRegionsList();
+                }
+                
+                currentRect = null;
+                updatePreview();
+            }
+        }
+
+        function handlePointerLeave() {
+        function handlePointerLeave() {
+            if (isDrawing) {
+                isDrawing = false;
+                currentRect = null;
+                updatePreview();
+            }
+            if (isDragging) isDragging = false;
+            if (isResizing) {
+                isResizing = false;
+                resizeHandle = null;
+            }
+            previewCanvas.style.cursor = 'crosshair';
+        }
+
+        function updateRegionsList() {
             const regionsList = document.getElementById('regionsList');
             const regionsContainer = document.getElementById('regionsContainer');
-
-            // Upload area interactions
-            uploadArea.addEventListener('click', () => imageInput.click());
             
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.classList.remove('dragover');
-            });
-
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                const file = e.dataTransfer.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    loadImage(file);
-                }
-            });
-
-            imageInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    loadImage(file);
-                }
-            });
-
-            function loadImage(file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        sourceImage = img;
-                        mainSection.classList.remove('hidden');
-                        freehandRegions = [];
-                        updatePreview();
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+            if (freehandRegions.length === 0) {
+                regionsList.classList.add('hidden');
+                return;
             }
 
-            // Mode switching
-            gridModeBtn.addEventListener('click', () => {
-                currentMode = 'grid';
-                gridModeBtn.classList.add('active');
-                freehandModeBtn.classList.remove('active');
-                gridControls.classList.remove('hidden');
-                freehandControls.classList.add('hidden');
-                clearRegionsBtn.style.display = 'none';
-                previewCanvas.style.cursor = 'default';
-                updatePreview();
-            });
+            regionsList.classList.remove('hidden');
+            document.getElementById('regionCount').textContent = freehandRegions.length;
+            regionsContainer.innerHTML = '';
 
-            freehandModeBtn.addEventListener('click', () => {
-                currentMode = 'freehand';
-                freehandModeBtn.classList.add('active');
-                gridModeBtn.classList.remove('active');
-                gridControls.classList.add('hidden');
-                freehandControls.classList.remove('hidden');
-                clearRegionsBtn.style.display = 'inline-block';
-                previewCanvas.style.cursor = 'crosshair';
-                updatePreview();
+            freehandRegions.forEach((region, index) => {
+                const card = document.createElement('div');
+                card.className = 'region-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="region-info">Region ${index + 1}</div>
+                        <div class="region-size">${Math.round(region.width)} × ${Math.round(region.height)}px</div>
+                    </div>
+                    <button class="region-delete" onclick="deleteRegion(${index})">×</button>
+                `;
+                regionsContainer.appendChild(card);
             });
+        }
 
-            // Canvas mouse events for freehand mode
-            previewCanvas.addEventListener('mousedown', (e) => {
-                if (currentMode !== 'freehand' || !sourceImage) return;
-                
-                const rect = previewCanvas.getBoundingClientRect();
-                const scaleX = sourceImage.width / rect.width;
-                const scaleY = sourceImage.height / rect.height;
-                
-                const mouseX = (e.clientX - rect.left) * scaleX;
-                const mouseY = (e.clientY - rect.top) * scaleY;
-                
-                // Check if clicking on a resize handle
-                const handleInfo = getResizeHandle(mouseX, mouseY);
-                if (handleInfo) {
-                    isResizing = true;
-                    selectedRegion = handleInfo.regionIndex;
-                    resizeHandle = handleInfo.handle;
-                    return;
-                }
-                
-                // Check if clicking inside an existing region
-                const clickedRegion = getRegionAtPoint(mouseX, mouseY);
-                if (clickedRegion !== null) {
-                    selectedRegion = clickedRegion;
-                    isDragging = true;
-                    const region = freehandRegions[clickedRegion];
-                    dragOffsetX = mouseX - region.x;
-                    dragOffsetY = mouseY - region.y;
-                    updatePreview();
-                    return;
-                }
-                
-                // Start drawing new region
+        function deleteRegion(index) {
+            freehandRegions.splice(index, 1);
+            if (selectedRegion === index) {
                 selectedRegion = null;
-                startX = mouseX;
-                startY = mouseY;
-                isDrawing = true;
-                currentRect = { x: startX, y: startY, width: 0, height: 0 };
-            });
-
-            previewCanvas.addEventListener('mousemove', (e) => {
-                if (currentMode !== 'freehand') return;
-                
-                const rect = previewCanvas.getBoundingClientRect();
-                const scaleX = sourceImage.width / rect.width;
-                const scaleY = sourceImage.height / rect.height;
-                
-                const mouseX = (e.clientX - rect.left) * scaleX;
-                const mouseY = (e.clientY - rect.top) * scaleY;
-                
-                // Handle resizing
-                if (isResizing && selectedRegion !== null) {
-                    const region = freehandRegions[selectedRegion];
-                    
-                    switch(resizeHandle) {
-                        case 'nw': // Top-left
-                            const newWidth1 = region.width + (region.x - mouseX);
-                            const newHeight1 = region.height + (region.y - mouseY);
-                            if (newWidth1 > 10 && newHeight1 > 10) {
-                                region.x = mouseX;
-                                region.y = mouseY;
-                                region.width = newWidth1;
-                                region.height = newHeight1;
-                            }
-                            break;
-                        case 'ne': // Top-right
-                            const newWidth2 = mouseX - region.x;
-                            const newHeight2 = region.height + (region.y - mouseY);
-                            if (newWidth2 > 10 && newHeight2 > 10) {
-                                region.y = mouseY;
-                                region.width = newWidth2;
-                                region.height = newHeight2;
-                            }
-                            break;
-                        case 'sw': // Bottom-left
-                            const newWidth3 = region.width + (region.x - mouseX);
-                            const newHeight3 = mouseY - region.y;
-                            if (newWidth3 > 10 && newHeight3 > 10) {
-                                region.x = mouseX;
-                                region.width = newWidth3;
-                                region.height = newHeight3;
-                            }
-                            break;
-                        case 'se': // Bottom-right
-                            region.width = mouseX - region.x;
-                            region.height = mouseY - region.y;
-                            if (region.width < 10) region.width = 10;
-                            if (region.height < 10) region.height = 10;
-                            break;
-                        case 'n': // Top edge
-                            const newHeight5 = region.height + (region.y - mouseY);
-                            if (newHeight5 > 10) {
-                                region.y = mouseY;
-                                region.height = newHeight5;
-                            }
-                            break;
-                        case 's': // Bottom edge
-                            region.height = mouseY - region.y;
-                            if (region.height < 10) region.height = 10;
-                            break;
-                        case 'w': // Left edge
-                            const newWidth6 = region.width + (region.x - mouseX);
-                            if (newWidth6 > 10) {
-                                region.x = mouseX;
-                                region.width = newWidth6;
-                            }
-                            break;
-                        case 'e': // Right edge
-                            region.width = mouseX - region.x;
-                            if (region.width < 10) region.width = 10;
-                            break;
-                    }
-                    
-                    updateRegionsList();
-                    updatePreview();
-                    return;
-                }
-                
-                // Handle dragging
-                if (isDragging && selectedRegion !== null) {
-                    const region = freehandRegions[selectedRegion];
-                    region.x = Math.max(0, Math.min(mouseX - dragOffsetX, sourceImage.width - region.width));
-                    region.y = Math.max(0, Math.min(mouseY - dragOffsetY, sourceImage.height - region.height));
-                    updatePreview();
-                    return;
-                }
-                
-                // Handle drawing new region
-                if (isDrawing) {
-                    currentRect.width = mouseX - startX;
-                    currentRect.height = mouseY - startY;
-                    updatePreview();
-                    return;
-                }
-                
-                // Update cursor based on hover
-                const handleInfo = getResizeHandle(mouseX, mouseY);
-                if (handleInfo) {
-                    const cursors = {
-                        'nw': 'nw-resize',
-                        'ne': 'ne-resize',
-                        'sw': 'sw-resize',
-                        'se': 'se-resize',
-                        'n': 'n-resize',
-                        's': 's-resize',
-                        'w': 'w-resize',
-                        'e': 'e-resize'
-                    };
-                    previewCanvas.style.cursor = cursors[handleInfo.handle];
-                } else if (getRegionAtPoint(mouseX, mouseY) !== null) {
-                    previewCanvas.style.cursor = 'move';
-                } else {
-                    previewCanvas.style.cursor = 'crosshair';
-                }
-            });
-
-            previewCanvas.addEventListener('mouseup', (e) => {
-                if (currentMode !== 'freehand') return;
-                
-                if (isResizing) {
-                    isResizing = false;
-                    resizeHandle = null;
-                    updatePreview();
-                    return;
-                }
-                
-                if (isDragging) {
-                    isDragging = false;
-                    updatePreview();
-                    return;
-                }
-                
-                if (isDrawing) {
-                    isDrawing = false;
-                    
-                    if (Math.abs(currentRect.width) > 10 && Math.abs(currentRect.height) > 10) {
-                        // Normalize rectangle (handle negative width/height)
-                        const normalizedRect = {
-                            x: currentRect.width < 0 ? startX + currentRect.width : startX,
-                            y: currentRect.height < 0 ? startY + currentRect.height : startY,
-                            width: Math.abs(currentRect.width),
-                            height: Math.abs(currentRect.height)
-                        };
-                        
-                        freehandRegions.push(normalizedRect);
-                        selectedRegion = freehandRegions.length - 1;
-                        updateRegionsList();
-                    }
-                    
-                    currentRect = null;
-                    updatePreview();
-                }
-            });
-
-            previewCanvas.addEventListener('mouseleave', () => {
-                if (isDrawing) {
-                    isDrawing = false;
-                    currentRect = null;
-                    updatePreview();
-                }
-                if (isDragging) {
-                    isDragging = false;
-                }
-                if (isResizing) {
-                    isResizing = false;
-                    resizeHandle = null;
-                }
-                previewCanvas.style.cursor = 'crosshair';
-            });
-
-            function updateRegionsList() {
-                if (freehandRegions.length === 0) {
-                    regionsList.classList.add('hidden');
-                    return;
-                }
-
-                regionsList.classList.remove('hidden');
-                document.getElementById('regionCount').textContent = freehandRegions.length;
-                regionsContainer.innerHTML = '';
-
-                freehandRegions.forEach((region, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'region-item';
-                    item.innerHTML = `
-                        <span class="region-info">Region ${index + 1}: ${Math.round(region.width)}×${Math.round(region.height)}px</span>
-                        <button class="region-delete" onclick="deleteRegion(${index})">Delete</button>
-                    `;
-                    regionsContainer.appendChild(item);
-                });
+            } else if (selectedRegion > index) {
+                selectedRegion--;
             }
+            updateRegionsList();
+            updatePreview();
+        }
 
-            function deleteRegion(index) {
-                freehandRegions.splice(index, 1);
-                if (selectedRegion === index) {
-                    selectedRegion = null;
-                } else if (selectedRegion > index) {
-                    selectedRegion--;
+        function getRegionAtPoint(x, y) {
+            for (let i = freehandRegions.length - 1; i >= 0; i--) {
+                const region = freehandRegions[i];
+                if (x >= region.x && x <= region.x + region.width &&
+                    y >= region.y && y <= region.y + region.height) {
+                    return i;
                 }
-                updateRegionsList();
-                updatePreview();
             }
+            return null;
+        }
 
-            function getRegionAtPoint(x, y) {
-                // Check in reverse order so top-most region is selected
-                for (let i = freehandRegions.length - 1; i >= 0; i--) {
-                    const region = freehandRegions[i];
-                    if (x >= region.x && x <= region.x + region.width &&
-                        y >= region.y && y <= region.y + region.height) {
-                        return i;
-                    }
-                }
-                return null;
-            }
-
-            function getResizeHandle(x, y) {
-                for (let i = freehandRegions.length - 1; i >= 0; i--) {
-                    const region = freehandRegions[i];
-                    const handles = getHandlePositions(region);
-                    
-                    for (const [handle, pos] of Object.entries(handles)) {
-                        if (Math.abs(x - pos.x) <= handleSize && Math.abs(y - pos.y) <= handleSize) {
-                            return { regionIndex: i, handle };
-                        }
-                    }
-                }
-                return null;
-            }
-
-            function getHandlePositions(region) {
-                return {
-                    'nw': { x: region.x, y: region.y },
-                    'ne': { x: region.x + region.width, y: region.y },
-                    'sw': { x: region.x, y: region.y + region.height },
-                    'se': { x: region.x + region.width, y: region.y + region.height },
-                    'n': { x: region.x + region.width / 2, y: region.y },
-                    's': { x: region.x + region.width / 2, y: region.y + region.height },
-                    'w': { x: region.x, y: region.y + region.height / 2 },
-                    'e': { x: region.x + region.width, y: region.y + region.height / 2 }
-                };
-            }
-
-            function drawResizeHandles(region, isSelected) {
+        function getResizeHandle(x, y) {
+            for (let i = freehandRegions.length - 1; i >= 0; i--) {
+                const region = freehandRegions[i];
                 const handles = getHandlePositions(region);
                 
-                ctx.fillStyle = isSelected ? '#ff0000' : '#00ff00';
-                ctx.strokeStyle = 'white';
-                ctx.lineWidth = 2;
-                
-                for (const pos of Object.values(handles)) {
-                    ctx.fillRect(pos.x - handleSize / 2, pos.y - handleSize / 2, handleSize, handleSize);
-                    ctx.strokeRect(pos.x - handleSize / 2, pos.y - handleSize / 2, handleSize, handleSize);
+                for (const [handle, pos] of Object.entries(handles)) {
+                    if (Math.abs(x - pos.x) <= handleSize && Math.abs(y - pos.y) <= handleSize) {
+                        return { regionIndex: i, handle };
+                    }
+                }
+            }
+            return null;
+        }
+
+        function getHandlePositions(region) {
+            return {
+                'nw': { x: region.x, y: region.y },
+                'ne': { x: region.x + region.width, y: region.y },
+                'sw': { x: region.x, y: region.y + region.height },
+                'se': { x: region.x + region.width, y: region.y + region.height },
+                'n': { x: region.x + region.width / 2, y: region.y },
+                's': { x: region.x + region.width / 2, y: region.y + region.height },
+                'w': { x: region.x, y: region.y + region.height / 2 },
+                'e': { x: region.x + region.width, y: region.y + region.height / 2 }
+            };
+        }
+
+        function drawResizeHandles(region, isSelected) {
+            const handles = getHandlePositions(region);
+            
+            ctx.fillStyle = isSelected ? '#FF8FA3' : '#8B7FD9';
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            
+            for (const pos of Object.values(handles)) {
+                ctx.fillRect(pos.x - handleSize / 2, pos.y - handleSize / 2, handleSize, handleSize);
+                ctx.strokeRect(pos.x - handleSize / 2, pos.y - handleSize / 2, handleSize, handleSize);
+            }
+        }
+
+        document.getElementById('clearRegionsBtn').addEventListener('click', () => {
+            freehandRegions = [];
+            selectedRegion = null;
+            updateRegionsList();
+            updatePreview();
+        });
+
+        function updatePreview() {
+            if (!sourceImage) return;
+
+            previewCanvas.width = sourceImage.width;
+            previewCanvas.height = sourceImage.height;
+            ctx.drawImage(sourceImage, 0, 0);
+
+            if (currentMode === 'grid') {
+                drawGridPreview();
+            } else {
+                drawFreehandPreview();
+            }
+        }
+
+        function drawGridPreview() {
+            const top = parseInt(document.getElementById('topBorder').value);
+            const bottom = parseInt(document.getElementById('bottomBorder').value);
+            const left = parseInt(document.getElementById('leftBorder').value);
+            const right = parseInt(document.getElementById('rightBorder').value);
+            const rows = parseInt(document.getElementById('rows').value);
+            const cols = parseInt(document.getElementById('cols').value);
+            const marginX = parseInt(document.getElementById('marginX').value);
+            const marginY = parseInt(document.getElementById('marginY').value);
+
+            const x0 = left;
+            const y0 = top;
+            const x1 = sourceImage.width - right;
+            const y1 = sourceImage.height - bottom;
+
+            ctx.strokeStyle = '#FF8FA3';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+
+            const availableWidth = x1 - x0 - (cols - 1) * marginX;
+            const availableHeight = y1 - y0 - (rows - 1) * marginY;
+            const cellW = availableWidth / cols;
+            const cellH = availableHeight / rows;
+
+            ctx.strokeStyle = '#8B7FD9';
+            ctx.lineWidth = 2;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const cellX = x0 + c * (cellW + marginX);
+                    const cellY = y0 + r * (cellH + marginY);
+                    ctx.strokeRect(cellX, cellY, cellW, cellH);
                 }
             }
 
-            clearRegionsBtn.addEventListener('click', () => {
-                freehandRegions = [];
-                selectedRegion = null;
-                updateRegionsList();
-                updatePreview();
+            if (marginX > 0 || marginY > 0) {
+                ctx.fillStyle = 'rgba(111, 180, 232, 0.2)';
+                
+                for (let c = 1; c < cols; c++) {
+                    const marginStartX = x0 + c * cellW + (c - 1) * marginX;
+                    ctx.fillRect(marginStartX, y0, marginX, y1 - y0);
+                }
+                
+                for (let r = 1; r < rows; r++) {
+                    const marginStartY = y0 + r * cellH + (r - 1) * marginY;
+                    ctx.fillRect(x0, marginStartY, x1 - x0, marginY);
+                }
+            }
+        }
+
+        function drawFreehandPreview() {
+            freehandRegions.forEach((region, index) => {
+                const isSelected = index === selectedRegion;
+                
+                ctx.strokeStyle = isSelected ? '#FF8FA3' : '#8B7FD9';
+                ctx.lineWidth = isSelected ? 3 : 2;
+                ctx.strokeRect(region.x, region.y, region.width, region.height);
+                
+                if (isSelected) {
+                    ctx.fillStyle = 'rgba(255, 143, 163, 0.1)';
+                    ctx.fillRect(region.x, region.y, region.width, region.height);
+                }
+                
+                drawResizeHandles(region, isSelected);
+                
+                ctx.fillStyle = isSelected ? '#FF8FA3' : '#8B7FD9';
+                ctx.font = 'bold 16px DM Sans';
+                ctx.fillText(`#${index + 1}`, region.x + 5, region.y + 20);
             });
 
-            function updatePreview() {
-                if (!sourceImage) return;
-
-                previewCanvas.width = sourceImage.width;
-                previewCanvas.height = sourceImage.height;
-                ctx.drawImage(sourceImage, 0, 0);
-
-                if (currentMode === 'grid') {
-                    drawGridPreview();
-                } else {
-                    drawFreehandPreview();
-                }
-            }
-
-            function drawGridPreview() {
-                const top = parseInt(document.getElementById('topBorder').value);
-                const bottom = parseInt(document.getElementById('bottomBorder').value);
-                const left = parseInt(document.getElementById('leftBorder').value);
-                const right = parseInt(document.getElementById('rightBorder').value);
-                const rows = parseInt(document.getElementById('rows').value);
-                const cols = parseInt(document.getElementById('cols').value);
-                const marginX = parseInt(document.getElementById('marginX').value);
-                const marginY = parseInt(document.getElementById('marginY').value);
-
-                const x0 = left;
-                const y0 = top;
-                const x1 = sourceImage.width - right;
-                const y1 = sourceImage.height - bottom;
-
-                // Draw red border
-                ctx.strokeStyle = 'red';
+            if (isDrawing && currentRect) {
+                ctx.strokeStyle = '#6FB4E8';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+                ctx.setLineDash([5, 5]);
+                ctx.strokeRect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
+                ctx.setLineDash([]);
+            }
+        }
 
-                // Calculate available space and cell dimensions
-                const availableWidth = x1 - x0 - (cols - 1) * marginX;
-                const availableHeight = y1 - y0 - (rows - 1) * marginY;
-                const cellW = availableWidth / cols;
-                const cellH = availableHeight / rows;
+        function cropImages() {
+            if (!sourceImage) return;
 
-                // Draw cells with margins
-                ctx.strokeStyle = 'lime';
-                ctx.lineWidth = 1;
+            croppedImages = [];
+            imageGrid.innerHTML = '';
 
-                for (let r = 0; r < rows; r++) {
-                    for (let c = 0; c < cols; c++) {
-                        const cellX = x0 + c * (cellW + marginX);
-                        const cellY = y0 + r * (cellH + marginY);
-                        ctx.strokeRect(cellX, cellY, cellW, cellH);
-                    }
-                }
-
-                // Draw margin areas in blue
-                if (marginX > 0 || marginY > 0) {
-                    ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
-                    
-                    // Vertical margins
-                    for (let c = 1; c < cols; c++) {
-                        const marginStartX = x0 + c * cellW + (c - 1) * marginX;
-                        ctx.fillRect(marginStartX, y0, marginX, y1 - y0);
-                    }
-                    
-                    // Horizontal margins
-                    for (let r = 1; r < rows; r++) {
-                        const marginStartY = y0 + r * cellH + (r - 1) * marginY;
-                        ctx.fillRect(x0, marginStartY, x1 - x0, marginY);
-                    }
-                }
+            if (currentMode === 'grid') {
+                cropGridMode();
+            } else {
+                cropFreehandMode();
             }
 
-            function drawFreehandPreview() {
-                // Draw all regions
-                freehandRegions.forEach((region, index) => {
-                    const isSelected = index === selectedRegion;
-                    
-                    // Draw rectangle
-                    ctx.strokeStyle = isSelected ? 'red' : 'lime';
-                    ctx.lineWidth = isSelected ? 3 : 2;
-                    ctx.strokeRect(region.x, region.y, region.width, region.height);
-                    
-                    // Draw semi-transparent fill for selected region
-                    if (isSelected) {
-                        ctx.fillStyle = 'rgba(255, 0, 0, 0.1)';
-                        ctx.fillRect(region.x, region.y, region.width, region.height);
-                    }
-                    
-                    // Draw resize handles
-                    drawResizeHandles(region, isSelected);
-                    
-                    // Draw region number
-                    ctx.fillStyle = isSelected ? 'red' : 'lime';
-                    ctx.font = 'bold 16px Arial';
-                    ctx.fillText(`#${index + 1}`, region.x + 5, region.y + 20);
-                });
+            document.getElementById('imageCount').textContent = croppedImages.length;
+            croppedSection.classList.add('visible');
+        }
 
-                // Draw current drawing region in yellow
-                if (isDrawing && currentRect) {
-                    ctx.strokeStyle = 'yellow';
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(currentRect.x, currentRect.y, currentRect.width, currentRect.height);
-                }
-            }
+        function cropGridMode() {
+            const top = parseInt(document.getElementById('topBorder').value);
+            const bottom = parseInt(document.getElementById('bottomBorder').value);
+            const left = parseInt(document.getElementById('leftBorder').value);
+            const right = parseInt(document.getElementById('rightBorder').value);
+            const rows = parseInt(document.getElementById('rows').value);
+            const cols = parseInt(document.getElementById('cols').value);
+            const marginX = parseInt(document.getElementById('marginX').value);
+            const marginY = parseInt(document.getElementById('marginY').value);
 
-            function cropImages() {
-                if (!sourceImage) return;
+            const x0 = left;
+            const y0 = top;
+            const x1 = sourceImage.width - right;
+            const y1 = sourceImage.height - bottom;
 
-                croppedImages = [];
-                croppedGrid.innerHTML = '';
+            const availableWidth = x1 - x0 - (cols - 1) * marginX;
+            const availableHeight = y1 - y0 - (rows - 1) * marginY;
+            const cellW = Math.floor(availableWidth / cols);
+            const cellH = Math.floor(availableHeight / rows);
 
-                if (currentMode === 'grid') {
-                    cropGridMode();
-                } else {
-                    cropFreehandMode();
-                }
+            let index = 1;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const sx = x0 + c * (cellW + marginX);
+                    const sy = y0 + r * (cellH + marginY);
 
-                document.getElementById('imageCount').textContent = croppedImages.length;
-                croppedSection.classList.remove('hidden');
-            }
-
-            function cropGridMode() {
-                const top = parseInt(document.getElementById('topBorder').value);
-                const bottom = parseInt(document.getElementById('bottomBorder').value);
-                const left = parseInt(document.getElementById('leftBorder').value);
-                const right = parseInt(document.getElementById('rightBorder').value);
-                const rows = parseInt(document.getElementById('rows').value);
-                const cols = parseInt(document.getElementById('cols').value);
-                const marginX = parseInt(document.getElementById('marginX').value);
-                const marginY = parseInt(document.getElementById('marginY').value);
-
-                const x0 = left;
-                const y0 = top;
-                const x1 = sourceImage.width - right;
-                const y1 = sourceImage.height - bottom;
-
-                const availableWidth = x1 - x0 - (cols - 1) * marginX;
-                const availableHeight = y1 - y0 - (rows - 1) * marginY;
-                const cellW = Math.floor(availableWidth / cols);
-                const cellH = Math.floor(availableHeight / rows);
-
-                let index = 1;
-                for (let r = 0; r < rows; r++) {
-                    for (let c = 0; c < cols; c++) {
-                        const sx = x0 + c * (cellW + marginX);
-                        const sy = y0 + r * (cellH + marginY);
-
-                        const canvas = document.createElement('canvas');
-                        canvas.width = cellW;
-                        canvas.height = cellH;
-                        const cellCtx = canvas.getContext('2d');
-
-                        cellCtx.drawImage(
-                            sourceImage,
-                            sx, sy, cellW, cellH,
-                            0, 0, cellW, cellH
-                        );
-
-                        const dataUrl = canvas.toDataURL('image/png');
-                        const imageName = `cropped_${index}`;
-                        croppedImages.push({ index, name: imageName, dataUrl });
-
-                        const item = document.createElement('div');
-                        item.className = 'cropped-item';
-                        item.innerHTML = `
-                            <img src="${dataUrl}" alt="${imageName}">
-                            <div class="image-label" onclick="editImageName(${index - 1}, event)">
-                                <span class="edit-icon">✏️</span>
-                                <span id="imageName${index - 1}">${imageName}</span>
-                            </div>
-                            <button class="download-btn" onclick="downloadImage(${index - 1})">⬇️</button>
-                        `;
-                        croppedGrid.appendChild(item);
-
-                        index++;
-                    }
-                }
-            }
-
-            function cropFreehandMode() {
-                if (freehandRegions.length === 0) {
-                    alert('Please draw at least one region to crop!');
-                    return;
-                }
-
-                freehandRegions.forEach((region, index) => {
                     const canvas = document.createElement('canvas');
-                    canvas.width = Math.floor(region.width);
-                    canvas.height = Math.floor(region.height);
+                    canvas.width = cellW;
+                    canvas.height = cellH;
                     const cellCtx = canvas.getContext('2d');
 
-                    cellCtx.drawImage(
-                        sourceImage,
-                        region.x, region.y, region.width, region.height,
-                        0, 0, region.width, region.height
-                    );
+                    cellCtx.drawImage(sourceImage, sx, sy, cellW, cellH, 0, 0, cellW, cellH);
 
                     const dataUrl = canvas.toDataURL('image/png');
-                    const imageName = `region_${index + 1}`;
-                    croppedImages.push({ index: index + 1, name: imageName, dataUrl });
+                    const imageName = `cropped_${index}`;
+                    croppedImages.push({ index, name: imageName, dataUrl });
 
-                    const item = document.createElement('div');
-                    item.className = 'cropped-item';
-                    item.innerHTML = `
-                        <img src="${dataUrl}" alt="${imageName}">
-                        <div class="image-label" onclick="editImageName(${index}, event)">
-                            <span class="edit-icon">✏️</span>
-                            <span id="imageName${index}">${imageName}</span>
-                        </div>
-                        <button class="download-btn" onclick="downloadImage(${index})">⬇️</button>
-                    `;
-                    croppedGrid.appendChild(item);
-                });
+                    createImageCard(index - 1, imageName, dataUrl);
+                    index++;
+                }
+            }
+        }
+
+        function cropFreehandMode() {
+            if (freehandRegions.length === 0) {
+                alert('Please draw at least one region to crop!');
+                return;
             }
 
-            function editImageName(index, event) {
-                event.stopPropagation();
-                const nameSpan = document.getElementById(`imageName${index}`);
-                const currentName = nameSpan.textContent;
-                
-                // Create input element
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = currentName;
-                input.style.width = '100%';
-                
-                // Replace span with input
-                nameSpan.parentNode.replaceChild(input, nameSpan);
-                input.focus();
-                input.select();
-                
-                // Handle blur and enter key
-                const finishEdit = () => {
-                    const newName = input.value.trim() || currentName;
-                    croppedImages[index].name = newName;
-                    
-                    const newSpan = document.createElement('span');
-                    newSpan.id = `imageName${index}`;
-                    newSpan.textContent = newName;
-                    input.parentNode.replaceChild(newSpan, input);
-                };
-                
-                input.addEventListener('blur', finishEdit);
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        finishEdit();
-                    }
-                });
-            }
+            freehandRegions.forEach((region, index) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.floor(region.width);
+                canvas.height = Math.floor(region.height);
+                const cellCtx = canvas.getContext('2d');
 
-            function downloadImage(index) {
-                const link = document.createElement('a');
-                link.download = `${croppedImages[index].name}.png`;
-                link.href = croppedImages[index].dataUrl;
-                link.click();
-            }
+                cellCtx.drawImage(sourceImage, region.x, region.y, region.width, region.height, 0, 0, region.width, region.height);
 
-            async function downloadAllAsZip() {
-                const zip = new JSZip();
-                
-                croppedImages.forEach((img) => {
-                    const base64Data = img.dataUrl.split(',')[1];
-                    zip.file(`${img.name}.png`, base64Data, { base64: true });
-                });
+                const dataUrl = canvas.toDataURL('image/png');
+                const imageName = `region_${index + 1}`;
+                croppedImages.push({ index: index + 1, name: imageName, dataUrl });
 
-                const blob = await zip.generateAsync({ type: 'blob' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'cropped_images.zip';
-                link.click();
-            }
-
-            function reset() {
-                sourceImage = null;
-                croppedImages = [];
-                freehandRegions = [];
-                selectedRegion = null;
-                isDragging = false;
-                isResizing = false;
-                isDrawing = false;
-                imageInput.value = '';
-                mainSection.classList.add('hidden');
-                croppedSection.classList.add('hidden');
-                croppedGrid.innerHTML = '';
-                ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-                updateRegionsList();
-            }
-
-            // Event listeners
-            document.getElementById('updatePreview').addEventListener('click', updatePreview);
-            document.getElementById('cropButton').addEventListener('click', cropImages);
-            document.getElementById('resetButton').addEventListener('click', reset);
-            document.getElementById('downloadAllButton').addEventListener('click', downloadAllAsZip);
-
-            // Update preview when grid controls change
-            ['topBorder', 'bottomBorder', 'leftBorder', 'rightBorder', 'rows', 'cols', 'marginX', 'marginY'].forEach(id => {
-                document.getElementById(id).addEventListener('input', () => {
-                    if (currentMode === 'grid') {
-                        updatePreview();
-                    }
-                });
+                createImageCard(index, imageName, dataUrl);
             });
-        </script>
+        }
+
+        function createImageCard(index, name, dataUrl) {
+            const card = document.createElement('div');
+            card.className = 'image-card fade-in';
+            card.innerHTML = `
+                <img src="${dataUrl}" alt="${name}">
+                <div class="image-overlay">
+                    <div class="image-name" onclick="editImageName(${index}, event)">
+                        ${name}
+                    </div>
+                    <button class="image-download" onclick="downloadImage(${index})">↓</button>
+                </div>
+            `;
+            imageGrid.appendChild(card);
+        }
+
+        function editImageName(index, event) {
+            event.stopPropagation();
+            const nameDiv = event.target;
+            const currentName = nameDiv.textContent.trim();
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentName;
+            input.className = 'image-name';
+            input.style.width = '100%';
+            
+            nameDiv.parentNode.replaceChild(input, nameDiv);
+            input.focus();
+            input.select();
+            
+            const finishEdit = () => {
+                const newName = input.value.trim() || currentName;
+                croppedImages[index].name = newName;
+                
+                const newDiv = document.createElement('div');
+                newDiv.className = 'image-name';
+                newDiv.onclick = (e) => editImageName(index, e);
+                newDiv.textContent = newName;
+                input.parentNode.replaceChild(newDiv, input);
+            };
+            
+            input.addEventListener('blur', finishEdit);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') finishEdit();
+            });
+        }
+
+        function downloadImage(index) {
+            const link = document.createElement('a');
+            link.download = `${croppedImages[index].name}.png`;
+            link.href = croppedImages[index].dataUrl;
+            link.click();
+        }
+
+        async function downloadAllAsZip() {
+            const zip = new JSZip();
+            
+            croppedImages.forEach((img) => {
+                const base64Data = img.dataUrl.split(',')[1];
+                zip.file(`${img.name}.png`, base64Data, { base64: true });
+            });
+
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'snapgrid_export.zip';
+            link.click();
+        }
+
+        function reset() {
+            sourceImage = null;
+            croppedImages = [];
+            freehandRegions = [];
+            selectedRegion = null;
+            imageInput.value = '';
+            emptyState.classList.remove('hidden');
+            canvasContainer.classList.add('hidden');
+            modeSection.style.display = 'none';
+            gridControls.style.display = 'none';
+            freehandControls.classList.add('hidden');
+            croppedSection.classList.remove('visible');
+            imageGrid.innerHTML = '';
+            ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+            updateRegionsList();
+        }
+
+        // Event Listeners
+        document.getElementById('applyGridBtn').addEventListener('click', updatePreview);
+        document.getElementById('sliceGridBtn').addEventListener('click', cropImages);
+        document.getElementById('sliceFreehandBtn').addEventListener('click', cropImages);
+        document.getElementById('exportAllBtn').addEventListener('click', downloadAllAsZip);
+        document.getElementById('resetBtn').addEventListener('click', reset);
+
+        ['topBorder', 'bottomBorder', 'leftBorder', 'rightBorder', 'rows', 'cols', 'marginX', 'marginY'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                if (currentMode === 'grid') updatePreview();
+            });
+        });
+    </script>
     </body>
 </html>
