@@ -90,6 +90,16 @@ body {
     padding-left: 8px;
     border-left: 1px solid var(--color-border);
 }
+/* Make the H1 behave like your logo text visually */
+.h1-logo {
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* Keep subtitle aligned nicely with the H1 */
+.h1-subtitle {
+  margin-top: 4px;
+}
 
 /* Main Workspace */
 .workspace {
